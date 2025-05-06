@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Cliente</title>
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <!-- Material Icons (opcional) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="container">
+
+  <h5>Buscar Cliente</h5>
+  <form id="formulario" method="get">
+    <div class="input-field">
+      <select name="tipo_documento" required>
+        <option value="" disabled selected>Elige el tipo</option>
+        <option value="Cédula">Cédula</option>
+        <option value="NIT">NIT</option>
+        <option value="Pasaporte">Pasaporte</option>
+      </select>
+      <label>Tipo de documento</label>
+    </div>
+
+    <div class="input-field">
+      <input type="text" name="numero_documento" id="numero_documento" required>
+      <label for="numero_documento">Número de documento</label>
+    </div>
+
+    <button type="submit" class="btn waves-effect waves-light">Buscar</button>
+  </form>
+
+  <div id="resultado" class="card-panel grey lighten-4" style="white-space: pre-wrap; margin-top: 20px;"></div>
+
+  <form method="get" action="/api/exportar/cliente">
+    <input type="hidden" name="tipo_documento" id="export_tipo" />
+    <input type="hidden" name="numero_documento" id="export_numero" />
+    <button type="submit" class="btn green">Exportar este cliente</button>
+  </form>
+
+  <br><br>
+  <a href="exportar/clientes" class="btn blue">Exportar todos los clientes</a>
+  <a href="exportar/fidelizados" class="btn teal">Exportar clientes fidelizados</a>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    // Inicializar selects
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+    });
+
+    // Manejar el formulario
+    document.getElementById("formulario").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const tipo = form.tipo_documento.value;
+      const numero = form.numero_documento.value;
+
+      document.getElementById("export_tipo").value = tipo;
+      document.getElementById("export_numero").value = numero;
+
+      const res = await fetch(`/api/cliente?tipo_documento=${tipo}&numero_documento=${numero}`);
+      const data = await res.json();
+
+      document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
