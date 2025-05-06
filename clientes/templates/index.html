@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Formulario Cliente</title>
-  <!-- Materialize CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-  <!-- Material Icons (opcional) -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="container">
@@ -42,16 +40,14 @@
   <a href="exportar/clientes" class="btn blue">Exportar todos los clientes</a>
   <a href="exportar/fidelizados" class="btn teal">Exportar clientes fidelizados</a>
 
-  <!-- Materialize JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
-    // Inicializar selects
+
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
     });
 
-    // Manejar el formulario
     document.getElementById("formulario").addEventListener("submit", async function(e) {
       e.preventDefault();
       const form = e.target;

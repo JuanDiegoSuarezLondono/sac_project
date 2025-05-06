@@ -8,16 +8,13 @@ django.setup()
 
 from clientes.models import Cliente, TipoDocumento, Compra
 
-# Limpieza previa
 Compra.objects.all().delete()
 Cliente.objects.all().delete()
 TipoDocumento.objects.all().delete()
 
-# Crear tipos de documento
 tipos = ['NIT', 'Cédula', 'Pasaporte']
 tipo_objs = {nombre: TipoDocumento.objects.create(nombre=nombre) for nombre in tipos}
 
-# Crear clientes
 for i in range(10):
     tipo = random.choice(list(tipo_objs.values()))
     cliente = Cliente.objects.create(
@@ -29,9 +26,8 @@ for i in range(10):
         telefono=f"300123450{i}"
     )
     
-    # Crear compras
-    for j in range(3):#random.randint(1, 5)):
-        fecha = date.today() - timedelta(days=random.randint(0, 60))  # últimas 2 meses
+    for j in range(random.randint(1, 5)):
+        fecha = date.today() - timedelta(days=random.randint(0, 60))
         monto = random.choice([100000, 500000, 2000000, 4000000, 1000000])
         Compra.objects.create(
             cliente=cliente,
@@ -40,7 +36,6 @@ for i in range(10):
             descripcion=f"Compra {j+1} de {cliente.nombre}"
         )
 
-# Cliente fiel con más de 5 millones en el último mes
 vip = Cliente.objects.create(
     tipo_documento=tipo_objs["Cédula"],
     numero_documento="1049636949",
